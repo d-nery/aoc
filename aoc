@@ -1,0 +1,55 @@
+#!/usr/bin/julia --color=yes
+
+using Downloads
+using InteractiveUtils
+
+function fetchdata(year, day)
+    mkpath("data/$year")
+
+    if (!isfile("data/$year/$day.txt"))
+        cookie = readline(".cookie")
+        Downloads.download("https://adventofcode.com/$year/day/$day/input", "data/$year/$day.txt",
+            headers = Dict([("cookie", "session=$cookie")]),
+        )
+    end
+
+    return strip(read("data/$year/$day.txt", String))
+end
+
+const day = get(ARGS, 1, "1")
+const problem = get(ARGS, 2, "1")
+const year = get(ARGS, 3, "2021")
+
+include("$year/day$day.jl")
+
+function main()
+    println("== AoC Problem Runner ==")
+    print("Day ")
+    printstyled("$day\n"; color = :yellow)
+    print("Year ")
+    printstyled("$year\n"; color = :yellow)
+    print("Problem ")
+    printstyled("$problem\n"; color = :yellow)
+    println("------------------------")
+
+    println("Getting input...")
+    data = fetchdata(year, day)
+    println("Done!")
+    println("------------------------")
+    println("Running...")
+
+    result = 0
+    if (problem == "1")
+        @time result = part_one(data)
+    elseif (problem == "2")
+        @time result = part_two(data)
+    else
+        @time test()
+        exit()
+    end
+
+    println("Done! Result $result copied to clipboard!")
+    clipboard(result)
+end
+
+main()
