@@ -2,7 +2,7 @@ using Test
 
 function part_one(input, window=1)
     numbers = parse.(Int64, split(input, "\n"))
-    windows = sum.(numbers[i:i+window-1] for i in 1:length(numbers)-window+1)
+    windows = sum.(numbers[i:i+window-1] for i ∈ 1:length(numbers)-window+1)
     return sum(windows[2:end] .> windows[1:end-1])
 end
 
