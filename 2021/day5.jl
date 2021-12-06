@@ -41,9 +41,8 @@ function build_board!(board, lines, diags = true)
         if is_vertical(line) || is_horizontal(line)
             board[x1:xs:x2, y1:ys:y2] .+= 1
         elseif diags
-            coords = [(x1 + xs * i, y1 + ys * i) for i = 0:abs(x2 - x1)]
-            for (x, y) in coords
-                board[x, y] += 1
+            for i = 0:abs(x2 - x1)
+                board[x1+xs*i, y1+ys*i] += 1
             end
         end
     end
