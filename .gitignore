@@ -29,6 +29,7 @@ docs/site/
 Manifest.toml
 .cookie
 data/
+*.png
 
 ### VisualStudioCode ###
 .vscode/*
