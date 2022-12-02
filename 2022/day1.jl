@@ -13,8 +13,7 @@ function part_two(input)
 end
 
 function test()
-    example = """
-1000
+    example = """1000
 2000
 3000
 
