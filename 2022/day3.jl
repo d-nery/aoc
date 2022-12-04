@@ -21,7 +21,6 @@ function part_two(input)
     rucksacks = split(input, "\n")
     groups = Iterators.partition(rucksacks, 3)
     return reduce((r, e) -> r + point(first(intersect(e...))), groups; init=0)
-    return 0
 end
 
 function test()
