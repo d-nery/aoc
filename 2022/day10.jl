@@ -29,25 +29,18 @@ function part_one(input)
     return ans
 end
 
-function bounds(x)
-    for (l, u) in [(0, 39), (40, 79), (80, 119), (120, 159), (160, 219), (200, 239)]
-        return (x == l ? l : x - 1, x == u ? u : x + 1)
-    end
-end
-
 function part_two(input)
     instructions = split(input, "\n")
     X = 1
     CRT = 0
-    raw_disp = [-1 for i in 1:40*8]
-    disp = reshape(raw_disp, 40, 8)'
+    raw_disp = [-1 for i in 1:40*6]
+    disp = reshape(raw_disp, 40, 6)'
 
     draw = () -> begin
-        lower, upper = bounds(X)
         column = CRT % 40
         line = CRT ÷ 40
 
-        if lower <= column <= upper
+        if X - 1 <= column <= X + 1
             disp[line+1, column+1] = 1
         else
             disp[line+1, column+1] = 0
@@ -62,18 +55,14 @@ function part_two(input)
     end
 
     for instr in instructions
-        if instr == "noop"
+        draw()
+        CRT += 1
+
+        if startswith(instr, "add")
             draw()
             CRT += 1
-            continue
+            X += parse(Int64, split(instr, " ")[2])
         end
-
-        draw()
-        CRT += 1
-
-        draw()
-        CRT += 1
-        X += parse(Int64, split(instr, " ")[2])
     end
 
     print_grid()
