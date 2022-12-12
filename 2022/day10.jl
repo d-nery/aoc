@@ -4,26 +4,22 @@ const strength = (cycle, X) -> cycle * X
 
 function part_one(input)
     instructions = split(input, "\n")
-    X = 1
-    cycles = 1
-    ans = 0
+    (X, cycles, ans) = (1, 1, 0)
 
     inc_cycle = () -> begin
         cycles += 1
-        if (cycles ∈ [20, 60, 100, 140, 180, 220])
+        if (cycles % 40 == 20)
             ans += strength(cycles, X)
         end
     end
 
     for instr in instructions
-        if instr == "noop"
-            inc_cycle()
-            continue
-        end
+        inc_cycle()
 
-        inc_cycle()
-        X += parse(Int64, split(instr, " ")[2])
-        inc_cycle()
+        if startswith(instr, "add")
+            X += parse(Int64, split(instr, " ")[2])
+            inc_cycle()
+        end
     end
 
     return ans
