@@ -39,32 +39,52 @@ function fill_grid!(grid, input, min_x)
 end
 
 function process!(grid, producer)
-    s = size(grid)
     counter = 0
+    j = 0
+    i = 0
+
     while true
         (x, y) = producer
         try
             while true
+                if j % 100 == 0
+                    to_img(grid, i)
+                    i += 1
+                end
+                j += 1
+
                 if grid[x+1, y] == AIR
+                    grid[x, y] = AIR
                     x += 1
                 elseif grid[x+1, y-1] == AIR
+                    grid[x, y] = AIR
                     y -= 1
                     x += 1
                 elseif grid[x+1, y+1] == AIR
+                    grid[x, y] = AIR
                     x += 1
                     y += 1
+                elseif (x, y) == producer
+                    counter += 1
+                    return counter
                 else
-                    grid[x, y] = SAND
                     counter += 1
                     break
                 end
+
+                # Changing here for the visualization
+                grid[producer...] = PRODUCER
+                grid[x, y] = SAND
+                # println(counter)
+                # display(grid)
+                # println()
+                # readline()
             end
 
-            println(counter)
-            display(grid)
-            println()
+
         catch err
             if isa(err, BoundsError)
+                grid[x, y] = AIR
                 return counter
             end
         end
@@ -72,59 +92,15 @@ function process!(grid, producer)
     end
 end
 
-function process2!(grid, producer)
-    (px, py) = producer
-    counter = 0
-    i = 1
-    j = 0
-    while true
-        (x, y) = (px, py)
-        while true
-            if j % 100 == 0
-                display2(grid, i)
-                i += 1
-            end
-            j += 1
-
-            s = size(grid)
-            if y - 1 <= 0
-                grid = prepend_column(grid)
-                py += 1
-                y += 1
-            elseif y + 1 > s[2]
-                grid = append_column(grid)
-            elseif grid[x+1, y] == AIR
-                x += 1
-            elseif grid[x+1, y-1] == AIR
-                y -= 1
-                x += 1
-            elseif grid[x+1, y+1] == AIR
-                x += 1
-                y += 1
-            elseif (x, y) == (px, py)
-                grid[x, y] = SAND
-                counter += 1
-                return counter
-            else
-                grid[x, y] = SAND
-                counter += 1
-                break
-            end
-        end
-
-
-    end
-end
-
-function append_column(grid)
-    c = zeros(Int, size(grid)[1])
-    c[end] = ROCK
+function append_columns(grid, n=1)
+    c = zeros(Int, size(grid)[1], n)
+    c[end, 1:end] .= ROCK
     return [grid c]
 end
 
-function prepend_column(grid)
-    c = zeros(Int, size(grid)[1])
-    c[end] = ROCK
+function prepend_columns(grid, n=1)
+    c = zeros(Int, size(grid)[1], n)
+    c[end, 1:end] .= ROCK
     return [c grid]
 end
 
@@ -135,8 +111,8 @@ function display(grid)
     end
 end
 
-function display2(grid, i)
-    img = map.(n ->
+function to_img(grid, i)
+    img = map(n ->
             n == ROCK ? RGB(153 / 256, 102 / 256, 51 / 256) :
             n == SAND ? RGB(1.0, 1.0, 0.0) :
             n == PRODUCER ? RGB(102 / 256, 0.0, 204 / 256) :
@@ -157,26 +133,26 @@ function part_one(input)
     return counter
 end
 
-
-
 function part_two(input)
     (min_x, max_x, min_y, max_y) = get_boundaries(input)
     grid = zeros(Int, max_y - min_y + 3, max_x - min_x + 1)
     fill_grid!(grid, input, min_x)
     grid[end, 1:end] .= ROCK
-
     py = 500 - min_x + 1
 
-    for _ in 1:150
-        grid = append_column(grid)
-        grid = prepend_column(grid)
-        py += 1
-    end
+    (h, w) = size(grid)
+
+    to_left = h - py
+    to_right = h - (w - py + 1)
+
+    grid = append_columns(grid, to_right)
+    grid = prepend_columns(grid, to_left)
+    py += to_left
 
     producer = (1, py)
     grid[producer...] = PRODUCER
 
-    counter = process2!(grid, producer)
+    counter = process!(grid, producer)
 
     return counter
 end
@@ -185,6 +161,6 @@ function test()
     example = """498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9"""
 
-    # @test part_one(example) == 24
+    @test part_one(example) == 24
     @test part_two(example) == 93
 end
