@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // Run all tests in a file using Minitest
+        {
+            "type": "rdbg",
+            "name": "Minitest - current file",
+            "request": "launch",
+            "script": "-Itest ${workspaceFolder}/aoc.rb",
+            "askParameters": false
+        },
+        // Attach the debugger to an active process (for example, Rails server)
+        {
+            "type": "rdbg",
+            "name": "Attach with rdbg",
+            "request": "attach"
+        }
+    ]
+}
