@@ -18,6 +18,7 @@ def get_input(year, day)
   uri = URI("https://adventofcode.com/#{year}/day/#{day}/input")
   request = Net::HTTP::Get.new(uri)
   request['Cookie'] = "session=#{cookie}"
+  request['User-Agent'] = 'https://github.com/d-nery/aoc <danielnso97@gmail.com>'
   input = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
     http.request(request)
   end.body.strip
