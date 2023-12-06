@@ -20,3 +20,5 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Style/GlobalVars:
   Enabled: false
+Lint/UnusedMethodArgument:
+  Enabled: false
