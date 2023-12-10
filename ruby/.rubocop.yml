@@ -22,3 +22,5 @@ Style/GlobalVars:
   Enabled: false
 Lint/UnusedMethodArgument:
   Enabled: false
+Metrics/BlockLength:
+  Enabled: false
