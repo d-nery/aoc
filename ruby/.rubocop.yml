@@ -24,3 +24,5 @@ Lint/UnusedMethodArgument:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
+Style/LambdaCall:
+  Enabled: false
