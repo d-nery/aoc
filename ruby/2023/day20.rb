@@ -49,9 +49,8 @@ def part_one(input)
   lows = 0
   1000.times do
     queue = [['broadcaster', ['button', false]]]
-    until queue.empty? # || pulses > 6
+    until queue.empty?
       target, pulse = queue.shift
-      #   puts "#{pulse[0]} -#{pulse[1]}-> #{target}"
       queue.concat(process_pulse(modules[target], pulse))
       highs += 1 if pulse[1]
       lows += 1 unless pulse[1]
@@ -63,18 +62,25 @@ end
 def part_two(input)
   modules = initial_configuration(input)
 
+  # rx will receive its low pulse when &jz receives all highs (4 inputs) -> Manual inspection of input file
+  highs_in_jz = []
   presses = 0
   loop do
     presses += 1
     queue = [['broadcaster', ['button', false]]]
-    until queue.empty? # || pulses > 6
+    until queue.empty?
       target, pulse = queue.shift
-      #   puts "#{pulse[0]} -#{pulse[1]}-> #{target}"
       queue.concat(process_pulse(modules[target], pulse))
-      return presses if target == 'rx' && !pulse[1]
+
+      # We save when jz has a high pulse, then get the lcm of the four inputs to check when all 4 will cycle together
+      if target == 'jz' && pulse[1]
+        highs_in_jz << presses
+        # p [target, pulse, presses]
+      end
+
+      return highs_in_jz.reduce(1, :lcm) if highs_in_jz.size == 4
     end
   end
-  presses
 end
 
 def test
