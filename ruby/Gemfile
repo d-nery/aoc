@@ -2,5 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'matrix'
 gem 'pastel'
+gem 'pqueue'
 gem 'rubocop', require: false

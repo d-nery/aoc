@@ -7,7 +7,7 @@
             "name": "Minitest - current file",
             "request": "launch",
             "script": "-Itest ${workspaceFolder}/aoc.rb",
-            "askParameters": false
+            "askParameters": true
         },
         // Attach the debugger to an active process (for example, Rails server)
         {
