@@ -1,0 +1,33 @@
+#!/usr/bin/env fish
+
+set -l problem $argv[1]; and set -q problem[1]; or set -l problem test
+set -l day $argv[2]; and set -q day[1]; or set -l day (date +%-d)
+set -l year $argv[3]; and set -q year[1]; or set -l year (date +%Y)
+
+set -l cookie (string trim (cat .cookie))
+set -l path "data/$year/$day.txt"
+
+echo == AoC Problem Runner ==
+echo Day $day
+echo Year $year
+echo Problem $problem
+echo ------------------------
+echo
+
+echo Getting input
+mkdir -p data/$year
+if test ! -e $path
+    curl -sS "https://adventofcode.com/$year/day/$day/input" \
+        -H "Cookie: session=$cookie" \
+        -A "https://github.com/d-nery/aoc <danielnso97@gmail.com>" \
+        -o "data/$year/$day.txt"
+end
+
+echo Compiling
+g++ main.cpp utils/utils.cpp $year/$day.cpp -Wall -Wextra -std=c++23 -Wno-unused-parameter -o aoc
+
+echo Running
+echo ------------------------
+echo
+
+./aoc $problem $path
