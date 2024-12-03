@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <ranges>
 
 #include "../utils/utils.h"
 
