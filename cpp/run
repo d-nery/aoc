@@ -24,7 +24,7 @@ if test ! -e $path
 end
 
 echo Compiling
-g++ main.cpp utils/utils.cpp $year/$day.cpp -Wall -Wextra -std=c++23 -Wno-unused-parameter -o aoc
+g++ main.cpp utils/utils.cpp $year/$day.cpp -Wall -Wextra -O3 -std=c++23 -Wno-unused-parameter -o aoc
 
 echo Running
 echo ------------------------
