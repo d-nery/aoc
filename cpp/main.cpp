@@ -26,5 +26,11 @@ int main(int argc, char* argv[]) {
         test();
     }
 
-    cout << "] in " << std::chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << "ms" << endl;
+    auto runtime = chrono::steady_clock::now() - start;
+    if (auto runtime_ms = std::chrono::duration_cast<chrono::milliseconds>(runtime).count(); runtime_ms != 0) {
+        cout << "] in " << runtime_ms << "ms" << endl;
+    } else {
+        auto runtime_us = std::chrono::duration_cast<chrono::microseconds>(runtime).count();
+        cout << "] in " << runtime_us << "us" << endl;
+    }
 }

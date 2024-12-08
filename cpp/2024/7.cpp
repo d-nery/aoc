@@ -7,7 +7,7 @@ using namespace std;
 
 static bool include_concat = false;
 
-bool check_result(uint64_t target, uint64_t acc, size_t idx, vector<int> numbers) {
+bool check_result(uint64_t target, uint64_t acc, size_t idx, vector<int> const& numbers) {
     if (idx == numbers.size()) {
         return acc == target;
     }
