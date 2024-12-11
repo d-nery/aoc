@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     auto disk = input.lines()[0];
 
     vector<int> expanded;
@@ -57,7 +57,7 @@ int part1(Input input) {
     return checksum;
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     auto disk = input.lines()[0];
 
     // [id, size]

@@ -26,7 +26,7 @@ bool check_result(uint64_t target, uint64_t acc, size_t idx, vector<int> const& 
     return sum || mul || concat;
 }
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     uint64_t sum = 0;
 
     for (auto& line : input.lines()) {
@@ -47,7 +47,7 @@ int part1(Input input) {
     return sum;
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     include_concat = true;
     return part1(input);
 }

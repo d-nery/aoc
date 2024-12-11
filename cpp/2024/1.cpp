@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     vector<int> v1;
     vector<int> v2;
 
@@ -25,7 +25,7 @@ int part1(Input input) {
     return ranges::fold_left(ranges::views::zip_transform([](int& n1, int& n2) { return abs(n1 - n2); }, v1, v2), 0, plus<int>{});
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     vector<int> v1;
     map<int, int> v2;
 

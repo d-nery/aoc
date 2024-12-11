@@ -51,7 +51,7 @@ int solve(Grid& grid, function<void(set<string>&, Point&, Point&)> antinode_hand
     return antinodes.size();
 }
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     auto grid = input.lines();
 
     int max_i = grid.size();
@@ -72,7 +72,7 @@ int part1(Input input) {
     });
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     auto grid = input.lines();
 
     int max_i = grid.size();

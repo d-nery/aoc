@@ -40,7 +40,7 @@ constexpr inline bool is_inside(Grid const& grid, Point const& point) {
     return point.x >= 0 && point.x < max_i && point.y >= 0 && point.y < max_j;
 }
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     auto grid = input.lines();
 
     int dir = 0;
@@ -101,7 +101,7 @@ bool has_loop(Grid const& grid, Point const& start_pos) {
     }
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     part1(input);
 
     // Try putting obstacle every where guard goes through

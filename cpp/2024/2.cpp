@@ -31,7 +31,7 @@ bool is_safe(vector<int> v, int ignore_idx = -1) {
     return true;
 }
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     int safe = 0;
 
     for (auto& line : input.lines()) {
@@ -51,7 +51,7 @@ int part1(Input input) {
     return safe;
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     int safe = 0;
 
     for (auto& line : input.lines()) {

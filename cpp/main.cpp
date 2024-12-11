@@ -8,8 +8,8 @@
 
 using namespace std;
 
-int part1(Input input);
-int part2(Input input);
+uint64_t part1(Input input);
+uint64_t part2(Input input);
 void test();
 
 int main(int argc, char* argv[]) {

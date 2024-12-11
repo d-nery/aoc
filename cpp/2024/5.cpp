@@ -7,7 +7,7 @@ using namespace std;
 
 static bool sum_unordered = false;
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     map<int, set<int>> rules;
 
     int sum = 0;
@@ -52,7 +52,7 @@ int part1(Input input) {
     return sum;
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     sum_unordered = true;
     return part1(input);
 }

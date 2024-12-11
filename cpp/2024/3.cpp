@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     regex pattern("mul\\(\\d+,\\d+\\)");
     regex pattern_digits("(\\d+),(\\d+)");
 
@@ -27,7 +27,7 @@ int part1(Input input) {
     return sum;
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     regex pattern("(mul\\(\\d+,\\d+\\)|do\\(\\)|don't\\(\\))");
     regex pattern_digits("(\\d+),(\\d+)");
 

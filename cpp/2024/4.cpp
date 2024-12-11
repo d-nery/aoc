@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int part1(Input input) {
+uint64_t part1(Input input) {
     int xmas = 0;
 
     auto grid = input.lines();
@@ -64,7 +64,7 @@ int part1(Input input) {
     return xmas;
 }
 
-int part2(Input input) {
+uint64_t part2(Input input) {
     int x_mas = 0;
 
     auto grid = input.lines();
