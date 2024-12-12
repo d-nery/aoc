@@ -1,34 +1,17 @@
 #include <bits/stdc++.h>
 
+#include "../utils/grid.h"
 #include "../utils/utils.h"
 
 using namespace std;
 
-using Grid = vector<string>;
-
-struct Point {
-    int x, y;
-
-    Point operator+(const Point& other) const { return Point{x + other.x, y + other.y}; }
-    Point operator-(const Point& other) { return Point{x - other.x, y - other.y}; }
-    string to_string() const { return format("{},{}", x, y); }
-};
-
-constexpr array<Point, 4> directions = {Point{-1, 0}, Point{0, 1}, Point{1, 0}, Point{0, -1}};
-constexpr inline bool is_inside(Grid const& grid, Point const& point) {
-    int max_i = grid.size();
-    int max_j = grid[0].length();
-
-    return point.x >= 0 && point.x < max_i && point.y >= 0 && point.y < max_j;
-}
-
 static bool consider_visited = true;
-int points(Grid& grid, Point const& from, set<string>& visited) {
+int points(Grid<char>& grid, Point const& from, set<Point>& visited) {
     if (consider_visited) {
-        visited.emplace(from.to_string());
+        visited.emplace(from);
     }
 
-    if (grid[from.x][from.y] == '9') {
+    if (grid[from] == '9') {
         return 1;
     }
 
@@ -36,15 +19,15 @@ int points(Grid& grid, Point const& from, set<string>& visited) {
     for (auto& dir : directions) {
         auto next = from + dir;
 
-        if (!is_inside(grid, next)) {
+        if (!grid.is_inside(next)) {
             continue;
         }
 
-        if (grid[next.x][next.y] - grid[from.x][from.y] != 1) {
+        if (grid[next] - grid[from] != 1) {
             continue;
         }
 
-        if (consider_visited && visited.contains(next.to_string())) {
+        if (consider_visited && visited.contains(next)) {
             continue;
         }
 
@@ -61,19 +44,14 @@ int points(Grid& grid, Point const& from, set<string>& visited) {
 }
 
 uint64_t part1(Input input) {
-    auto grid = input.lines();
-
-    int max_i = grid.size();
-    int max_j = grid[0].length();
+    auto grid = input.grid();
 
     int sum = 0;
 
-    for (int i = 0; i < max_i; i++) {
-        for (int j = 0; j < max_j; j++) {
-            if (grid[i][j] == '0') {
-                set<string> visited;
-                sum += points(grid, Point{i, j}, visited);
-            }
+    for (auto const& [v, point] : grid) {
+        if (v == '0') {
+            set<Point> visited;
+            sum += points(grid, point, visited);
         }
     }
 
