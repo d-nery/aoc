@@ -2,6 +2,7 @@
 
 #include <format>
 #include <ostream>
+#include <print>
 #include <string>
 
 using std::vector;
@@ -69,9 +70,16 @@ public:
 
     std::pair<int, int> size() const { return {inner.size(), inner[0].size()}; }
 
-    T operator[](const Point idx) { return inner[idx.x][idx.y]; }
+    T& operator[](const Point idx) { return inner[idx.x][idx.y]; }
 
-    void dump() {}
+    void dump() {
+        for (size_t x = 0; x < inner.size(); x++) {
+            for (size_t y = 0; y < inner[0].size(); y++) {
+                std::print("{}", inner[x][y]);
+            }
+            std::println();
+        }
+    }
 
     Iterator begin() { return Iterator(&inner); }
     Iterator end() { return Iterator(&inner, true); }
