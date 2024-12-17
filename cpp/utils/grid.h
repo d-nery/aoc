@@ -1,6 +1,7 @@
 #pragma once
 
 #include <format>
+#include <map>
 #include <ostream>
 #include <print>
 #include <string>
@@ -89,3 +90,4 @@ private:
 };
 
 constexpr std::array<Point, 4> directions = {Point(-1, 0), Point(0, 1), Point(1, 0), Point(0, -1)};
+const std::map<char, Point> direction_map = {{'N', Point(-1, 0)}, {'E', Point(0, 1)}, {'S', Point(1, 0)}, {'W', Point(0, -1)}};
