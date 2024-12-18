@@ -60,11 +60,21 @@ public:
         friend bool operator!=(const Iterator& a, const Iterator& b) { return !(a == b); };
     };
 
-    constexpr inline bool is_inside(Point const& point) {
+    constexpr inline bool is_inside(Point const& point) const {
         int max_x = inner.size();
         int max_y = inner[0].size();
 
         return point.x >= 0 && point.x < max_x && point.y >= 0 && point.y < max_y;
+    }
+
+    Grid(size_t x, size_t y, T v) {
+        for (size_t i = 0; i < x; i++) {
+            vector<T> _v;
+            for (size_t j = 0; j < y; j++) {
+                _v.push_back(v);
+            }
+            inner.push_back(_v);
+        }
     }
 
     Grid(vector<vector<T>> data) : inner(data) {}
@@ -72,11 +82,21 @@ public:
     std::pair<int, int> size() const { return {inner.size(), inner[0].size()}; }
 
     T& operator[](const Point idx) { return inner[idx.x][idx.y]; }
+    const T operator[](const Point idx) const { return inner[idx.x][idx.y]; }
 
     void dump() {
         for (size_t x = 0; x < inner.size(); x++) {
             for (size_t y = 0; y < inner[0].size(); y++) {
                 std::print("{}", inner[x][y]);
+            }
+            std::println();
+        }
+    }
+
+    void dump_s() {
+        for (size_t x = 0; x < inner.size(); x++) {
+            for (size_t y = 0; y < inner[0].size(); y++) {
+                std::print("[{}]", inner[x][y]);
             }
             std::println();
         }
