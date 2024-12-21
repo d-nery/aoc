@@ -16,6 +16,8 @@ struct Point {
     auto operator<=>(const Point&) const = default;
     std::string to_string() const { return std::format("({},{})", x, y); }
 
+    int manhattan(const Point& other) const { return std::abs(x - other.x) + std::abs(y - other.y); }
+
     friend std::ostream& operator<<(std::ostream& o, const Point& p) { return o << p.to_string(); };
 };
 
@@ -80,6 +82,16 @@ public:
     Grid(vector<vector<T>> data) : inner(data) {}
 
     std::pair<int, int> size() const { return {inner.size(), inner[0].size()}; }
+
+    Point find(T what) {
+        for (auto const& [item, p] : *this) {
+            if (item == what) {
+                return p;
+            }
+        }
+
+        return Point{-1, -1};
+    }
 
     T& operator[](const Point idx) { return inner[idx.x][idx.y]; }
     const T operator[](const Point idx) const { return inner[idx.x][idx.y]; }
