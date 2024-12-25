@@ -62,25 +62,18 @@ uint64_t part1(Input input) {
 }
 
 bool can_move(Grid<char>& grid, char& direction, Point at) {
-    auto c = grid[at];
-
-    if (c == '.') {
-        return true;
-    }
-
-    if (c == '#') {
-        return false;
-    }
-
     auto next = at + dir_map[direction];
-    if (c == '@') {
-        return can_move(grid, direction, next);
+
+    switch (grid[at]) {
+    case '.':
+        return true;
+    case '#':
+        return false;
+    case '@':
+        return can_move(grid, direction, at + dir_map[direction]);
+    default:
+        return can_move(grid, direction, next) && can_move(grid, direction, next + dir_map[grid[at]]);
     }
-
-    // c either [ or ]
-
-    auto other_side = next + dir_map[c];
-    return can_move(grid, direction, next) && can_move(grid, direction, other_side);
 }
 
 bool move_scaled(Grid<char>& grid, char& direction, Point at) {
