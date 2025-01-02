@@ -17,22 +17,32 @@ using namespace std;
 //        9   <vvv  <<vv  <vv   vv    <<v   <v    v     <<    <           vvv
 //        A   <     ^<<   ^<    ^     ^^<<  ^^<   ^^    ^^^<< ^^^<  ^^^
 
+// +---+---+---+        +---+---+
+// | 7 | 8 | 9 |        | ^ | A |
+// +---+---+---+    +---+---+---+
+// | 4 | 5 | 6 |    | < | v | > |
+// +---+---+---+    +---+---+---+
+// | 1 | 2 | 3 |
+// +---+---+---+
+//     | 0 | A |
+//     +---+---+
+
 static vector<vector<string>> numpad_moves = {
     {"", "^<", "^", "^>", "^^<", "^^", "^^>", "^^^<", "^^^", "^^^>", ">"},    // 0
     {">v", "", ">", ">>", "^", "^>", "^>>", "^^", "^^>", "^^>>", ">>v"},      // 1
-    {"v", "<", "", ">", "<^", "^", "^>", "<^^", "^^", "^^>", ">v"},           // 2
+    {"v", "<", "", ">", "<^", "^", "^>", "<^^", "^^", "^^>", "v>"},           // 2
     {"<v", "<<", "<", "", "<<^", "<^", "^", "<<^^", "<^^", "^^", "v"},        // 3
     {">vv", "v", ">v", ">>v", "", ">", ">>", "^", "^>", "^>>", ">>vv"},       // 4
-    {"vv", "<v", "v", ">v", "<", "", ">", "<^", "^", "^>", ">vv"},            // 5
+    {"vv", "<v", "v", "v>", "<", "", ">", "<^", "^", "^>", "vv>"},            // 5
     {"<vv", "<<v", "<v", "v", "<<", "<", "", "<<^", "<^", "^", "vv"},         // 6
-    {">vvv", "vv", ">vv", ">>vv", "v", ">v", ">>v", "", ">", ">>", ">>vvv"},  // 7
-    {"vvv", "<vv", "vv", ">vv", "<v", "v", ">v", "<", "", ">", ">vvv"},       // 8
+    {">vvv", "vv", "vv>", ">>vv", "v", "v>", "v>>", "", ">", ">>", ">>vvv"},  // 7
+    {"vvv", "<vv", "vv", "vv>", "<v", "v", "v>", "<", "", ">", "vvv>"},       // 8
     {"<vvv", "<<vv", "<vv", "vv", "<<v", "<v", "v", "<<", "<", "", "vvv"},    // 9
     {"<", "^<<", "<^", "^", "^^<<", "<^^", "^^", "^^^<<", "<^^^", "^^^", ""}, // A
 };
 
 static vector<vector<string>> arrow_moves = {
-    {"", ">v", "v", "v<", ">"},   // ^
+    {"", "v>", "v", "v<", ">"},   // ^
     {"<^", "", "<", "<<", "^"},   // >
     {"^", ">", "", "<", "^>"},    // v
     {">^", ">>", ">", "", ">>^"}, // <
@@ -77,11 +87,11 @@ uint64_t part1(Input input) {
         sscanf(code.c_str(), "%dA", &v);
         sum += v * r2.length();
 
-        println("{}", r2);
-        println("{}", r1);
-        println("{}", moves);
-        println("{}: {} * {} = {}", code, v, r2.length(), v * r2.length());
-        println();
+        // println("{}", r2);
+        // println("{}", r1);
+        // println("{}", moves);
+        // println("{}: {} * {} = {}", code, v, r2.length(), v * r2.length());
+        // println();
     }
 
     // <AAv<A>>^A
@@ -99,69 +109,13 @@ uint64_t part2(Input input) {
     return 0;
 }
 
-void aaa() {
-    string x = "<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A";
-    vector<char> v{'I', '^', 'A', '<', 'v', '>'};
-
-    int at = 2;
-
-    string next;
-    for (auto c : x) {
-        if (c == 'A')
-            next += v[at];
-        if (c == '^')
-            at -= 3;
-        if (c == '>')
-            at += 1;
-        if (c == '<')
-            at -= 1;
-        if (c == 'v')
-            at += 3;
-    }
-
-    at = 2;
-    string next2;
-    for (auto c : next) {
-        if (c == 'A')
-            next2 += v[at];
-        if (c == '^')
-            at -= 3;
-        if (c == '>')
-            at += 1;
-        if (c == '<')
-            at -= 1;
-        if (c == 'v')
-            at += 3;
-    }
-
-    cout << x << endl;
-    cout << next << endl;
-    cout << next2 << endl;
-}
-
 void test() {
     string example = R"(029A
 980A
 179A
 456A
 379A)";
-    println();
-
-    // aaa();
-    // return;
 
     assert(part1(Input::from_raw(example)) == 126384);
     assert(part2(Input::from_raw(example)) == 0);
 }
-
-// <v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
-// v<<A>>^AvA^Av<<A>>^AAv<A<A>>^AAvAA<^A>Av<A>^AA<A>Av<A<A>>^AAAvA<^A>A
-
-// <A>Av<<AA>^AA>AvAA^A<vAAA>^A
-// <A>A<AAv<AA>>^AvAA^Av<AAA>^A
-
-// ^A<<^^A>>AvvvA
-// ^A^^<<A>>AvvvA
-
-//
-// 379A
