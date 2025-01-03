@@ -60,7 +60,7 @@ constexpr int to_idx_arr(char c) {
 uint64_t part1(Input input) {
     auto lines = input.lines();
 
-    int sum = 0;
+    uint64_t sum = 0;
     for (auto& code : lines) {
         char at = 'A';
         string moves;
@@ -86,27 +86,68 @@ uint64_t part1(Input input) {
         int v;
         sscanf(code.c_str(), "%dA", &v);
         sum += v * r2.length();
-
-        // println("{}", r2);
-        // println("{}", r1);
-        // println("{}", moves);
-        // println("{}: {} * {} = {}", code, v, r2.length(), v * r2.length());
-        // println();
     }
 
-    // <AAv<A>>^A
-    // ^^<A^>AvvAvA
-    // 593A
-
-    // 283A
-    // 670A
-    // 459A
-    // 279A
     return sum;
 }
 
+constexpr auto robot_amount = 25;
+uint64_t getCount(string input, int robot) {
+    // input -> count for robot in each depth (idx = depth)
+    static unordered_map<string, vector<uint64_t>> count_cache;
+
+    if (count_cache.contains(input) && count_cache[input][robot - 1] != 0) {
+        return count_cache[input][robot - 1];
+    } else if (!count_cache.contains(input)) {
+        count_cache[input] = vector<uint64_t>(robot_amount);
+    }
+
+    string sequence;       // complete sequence
+    vector<string> steps;  // each step back to A
+    char at = 'A';
+    for (auto& c : input) {
+        string move = arrow_moves[to_idx_arr(at)][to_idx_arr(c)] + "A";
+        steps.push_back(move);
+        sequence += move;
+        at = c;
+    }
+
+    count_cache[input][0] = sequence.size();
+
+    if (robot == robot_amount) {
+        return sequence.size();
+    }
+
+    uint64_t count = 0;
+    for (auto& step : steps) {
+        auto c = getCount(step, robot + 1);
+        count += c;
+    }
+
+    count_cache[input][robot - 1] = count;
+    return count;
+}
+
 uint64_t part2(Input input) {
-    return 0;
+    auto lines = input.lines();
+
+    uint64_t sum = 0;
+    for (auto& code : lines) {
+        char at = 'A';
+        string moves;
+        for (auto& c : code) {
+            moves += numpad_moves[to_idx(at)][to_idx(c)] + "A";
+            at = c;
+        }
+
+        auto count = getCount(moves, 1);
+
+        int v;
+        sscanf(code.c_str(), "%dA", &v);
+        sum += uint64_t(v) * count;
+    }
+
+    return sum;
 }
 
 void test() {
@@ -117,5 +158,5 @@ void test() {
 379A)";
 
     assert(part1(Input::from_raw(example)) == 126384);
-    assert(part2(Input::from_raw(example)) == 0);
+    assert(part2(Input::from_raw(example)) == 154115708116294);
 }
