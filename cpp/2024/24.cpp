@@ -48,6 +48,9 @@ uint64_t part1(Input input) {
             bool v2 = registers[op.op2];
             registers[op.out] = op.op == "AND" ? v1 & v2 : op.op == "OR" ? v1 | v2 : v1 ^ v2;
 
+            // For p2
+            println("{}({}) {} {}({}) -> {}({})", op.op1, int(v1), op.op, op.op2, int(v2), op.out, registers[op.out]);
+
             op.stable = true;
         }
     }
@@ -67,6 +70,115 @@ uint64_t part1(Input input) {
 }
 
 uint64_t part2(Input input) {
+    // X =  101101010111101101000111000000010110000000011
+    // Y =  100011100111110100010111100110001110000011011
+    // S = 1010000111111100001011110100110100100000011110
+    // Z = 1001111111011100001011110101010100010000011110
+    //           ^                    ^^     ^^
+
+    // All operations from input in adder order:
+    // x00 XOR y00 -> z00
+    // y00 AND x00 -> kvj  => carry
+
+    // y01 XOR x01 -> bhq
+    // bhq XOR kvj -> z01
+    // y01 AND x01 -> rtg
+    // kvj AND bhq -> wkc
+    // rtg OR  wkc -> htw
+
+    // y02 XOR x02 -> mpj
+    // mpj XOR htw -> z02
+    // htw AND mpj -> sdk
+    // x02 AND y02 -> dmq
+    // dmq OR  sdk -> gwf
+
+    // y03 XOR x03 -> nbw
+    // nbw XOR gwf -> z03
+    // nbw AND gwf -> btm
+    // x03 AND y03 -> psr
+    // psr OR  btm -> hct
+
+    // x04 XOR y04 -> cnr
+    // cnr XOR hct -> z04
+    // y04 AND x04 -> ggt
+    // cnr AND hct -> nbp
+    // ggt OR  nbp -> ffv
+
+    // y05 XOR x05 -> pmh
+    // pmh XOR ffv -> z05
+    // ffv AND pmh -> brb
+    // y05 AND x05 -> wnc
+    // brb OR  wnc -> sfm
+
+    // x06 XOR y06 -> wsn
+    // sfm XOR wsn -> z06
+    // wsn AND sfm -> kjs
+    // x06 AND y06 -> kbv
+    // kbv OR  kjs -> jqv
+    // etc
+
+    bool reading_ops = false;
+    map<string, bool> registers;
+
+    vector<Op> operations;
+    for (auto& line : input.lines()) {
+        if (line.empty()) {
+            reading_ops = true;
+            continue;
+        }
+
+        if (reading_ops) {
+            auto d = ranges::split_view(line, " "sv) | ranges::to<vector<string>>();
+            operations.push_back(Op{d[0], d[2], d[1], d[4], false});
+            continue;
+        }
+
+        auto d = ranges::split_view(line, ": "sv) | ranges::to<vector<string>>();
+        registers[d[0]] = d[1] == "1";
+    }
+
+    auto find_op = [&](string reg, string bin) {
+        auto op = find_if(operations.begin(), operations.end(), [&](Op op) { return (op.op1 == reg || op.op2 == reg) && op.op == bin; });
+        return *op;
+    };
+
+    for (int i = 1; i < 45; i++) {
+        string reg = format("x{:02d}", i);
+        auto i1 = find_op(reg, "XOR");
+        auto z = find_op(i1.out, "XOR");
+        if (!z.out.starts_with("z")) {
+            println("Error on bit {}", i);
+        }
+    }
+
+    // From above, steps with errors are 10, 17, 35, 39:
+    // From input:
+    // x10 XOR y10 -> kck
+    // x10 AND y10 -> z10  !!!
+    // kck XOR skm -> vcf  !!!
+    // skm AND kck -> sst
+    // sst OR  vcf -> fgb
+
+    // x17 XOR y17 -> qjg
+    // jjf XOR qjg -> fhg  !!!
+    // qjg AND jjf -> z17  !!!
+    // x17 AND y17 -> qjn
+    // qjn OR  fhg -> jfb
+
+    // y35 XOR x35 -> fsq  !!!
+    // dvb XOR jsn -> z35
+    // y35 AND x35 -> dvb  !!!
+    // jsn AND dvb -> ftc
+    // ftc OR  fsq -> bwc
+
+    // y39 XOR x39 -> kmh
+    // y39 AND x39 -> rvd
+    // kmh AND mnd -> wrj
+    // kmh XOR mnd -> tnc  !!!
+    // rvd OR wrj  -> z39  !!!
+
+    // In order: dvb,fhg,fsq,tnc,vcf,z10,z17,z39
+
     return 0;
 }
 
