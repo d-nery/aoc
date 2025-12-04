@@ -16,6 +16,14 @@ export const lines = (input: string): string[] => {
     .filter((line) => line.trim() !== "");
 };
 
+export const grid = (input: string): string[][] => {
+  return input
+    .trim()
+    .split("\n")
+    .filter((line) => line.trim() !== "")
+    .map((l) => l.split(""));
+};
+
 export const sections = (input: string): string[] => {
   return input.trim().split("\n\n");
 };
