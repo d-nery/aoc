@@ -13,15 +13,12 @@ const fetch_input = async () => {
 
   console.log("Fetching input...");
   const cookie = await Bun.file(".cookie").text();
-  const request = new Request(
-    `https://adventofcode.com/${year}/day/${day}/input`,
-    {
-      headers: {
-        Cookie: `session=${cookie.trim()}`,
-        "User-Agent": "https://github.com/d-nery/aoc <danielnso97@gmail.com>",
-      },
-    }
-  );
+  const request = new Request(`https://adventofcode.com/${year}/day/${day}/input`, {
+    headers: {
+      Cookie: `session=${cookie.trim()}`,
+      "User-Agent": "https://github.com/d-nery/aoc <danielnso97@gmail.com>",
+    },
+  });
 
   const raw = await fetch(request);
   const input = await raw.text();
@@ -48,11 +45,11 @@ console.log();
 const start = performance.now();
 let answer: any = 0;
 if (problem === "1") {
-  answer = partOne(input);
+  answer = await partOne(input);
 } else if (problem === "2") {
-  answer = partTwo(input);
+  answer = await partTwo(input);
 } else {
-  test();
+  await test();
   process.exit(0);
 }
 

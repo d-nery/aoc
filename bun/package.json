@@ -8,6 +8,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "prettier": "^3.7.3"
+    "prettier": "^3.7.3",
+    "z3-solver": "^4.15.4"
   }
 }
